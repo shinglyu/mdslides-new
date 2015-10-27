@@ -4,9 +4,10 @@ function updateSlide(content) {
     //editorText = editorTextarea.value,
     //TODO handle invalid content
     editorText = content,
+    //editorText = editor.getText(),
     editingContent = '',
     page = 0;
-  editingContent = editorText.substring(0, editorTextarea.selectionStart);
+  //editingContent = editorText.substring(0, editorTextarea.selectionStart);
   //page = markdownHelper.pageNumber(editingContent);
   console.log(previewWindow)
   console.log(editorText)
@@ -72,20 +73,31 @@ function inputEventTrigger(inputElement, options, callback) {
 }
 
 //TODO: user addEventListener
+/*
 window.onload = function(){
   inputEventTrigger(document.getElementById('editorTextarea'), updateSlide)
 }
+*/
+
 
 //TODO: wrap this into init
-var oReq = new XMLHttpRequest();
-oReq.onload = function(e){
-  console.log(oReq.response)
-  document.getElementById('editorTextarea').value = oReq.response
-  document.getElementById('previewIframe').addEventListener('load', updateSlide)
-  //window.setTimeout(updateSlide, 1000)
-  //updateSlide()
+function init(editor){
+  var oReq = new XMLHttpRequest();
+  oReq.onload = function(e){
+    console.log("Received content")
+    console.log(oReq)
+    console.log(oReq.response)
+    editor.setValue(oReq.response)
+    //document.getElementById('editorTextarea').value = oReq.response
+    updateSlide(editor.getValue())
+    //document.getElementById('previewIframe').addEventListener('load', function(){
+    //  updateSlide(editor.getText())
+    //})
+    //window.setTimeout(updateSlide, 1000)
+    //updateSlide()
+  }
+  //oReq.addEventListener("load", reqListener);
+  //TODO Dynamic file name
+  oReq.open("GET", "slide.md");
+  oReq.send();
 }
-//oReq.addEventListener("load", reqListener);
-//TODO Dynamic file name
-oReq.open("GET", "slide.md");
-oReq.send();

@@ -16,7 +16,10 @@ def test_launch(browser):
     browser.get('http://localhost:9876')
     assert 'MDSlides' in browser.title
 
+    #import time
+    #time.sleep(50)
     editorText = browser.find_element_by_class_name('CodeMirror').text
+    #element = WebDriverWait(ff, 10).until(EC.presence_of_element_located((By.ID, "myDynamicElement")))
     assert "Hello world" in editorText
 
     slideFrame = browser.find_element_by_id('previewIframe')
