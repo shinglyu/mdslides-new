@@ -3,8 +3,10 @@
   <head>
     <title>MDSlides</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="./bower_components/codemirror/lib/codemirror.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="./bower_components/codemirror/theme/colorforth.css">
     <link rel="stylesheet" href="style/style.css" type="text/css" media="all" />
-    <script src="./js/index.js" type="text/javascript" charset="utf-8"></script>
+
   </head>
   <body>
     <div id="toolbar">
@@ -16,5 +18,9 @@
     <div id="preview">
       <iframe id="previewIframe" src="slide.html"></iframe>
     </div>
+    <script src="./js/index.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./bower_components/codemirror/lib/codemirror.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./bower_components/codemirror/keymap/vim.js"></script> 
+    <script src="./js/vim_mode.js" type="text/javascript" charset="utf-8"></script>
   </body>
 </html>

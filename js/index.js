@@ -1,7 +1,9 @@
-function updateSlide() {
+function updateSlide(content) {
   console.log("update slide")
   var previewWindow = document.getElementById('previewIframe').contentWindow,
-    editorText = editorTextarea.value,
+    //editorText = editorTextarea.value,
+    //TODO handle invalid content
+    editorText = content,
     editingContent = '',
     page = 0;
   editingContent = editorText.substring(0, editorTextarea.selectionStart);
@@ -11,6 +13,7 @@ function updateSlide() {
   previewWindow.postMessage(
     {
       content: editorText,
+      //TODO make page work
       //page: page
 
     },
@@ -25,6 +28,7 @@ function updateSlide() {
   pReq.open("POST", "http://127.0.0.1:9876/save");
   pReq.send(editorText);
 }
+//TODO refactor this function to meet codemirror and textarea input
 function inputEventTrigger(inputElement, options, callback) {
   const DEFAULT_INTERVAL = 400;
   var prevUpdateSlideTime = new Date().getTime(),
@@ -67,10 +71,12 @@ function inputEventTrigger(inputElement, options, callback) {
   });
 }
 
+//TODO: user addEventListener
 window.onload = function(){
   inputEventTrigger(document.getElementById('editorTextarea'), updateSlide)
 }
 
+//TODO: wrap this into init
 var oReq = new XMLHttpRequest();
 oReq.onload = function(e){
   console.log(oReq.response)
@@ -82,5 +88,6 @@ oReq.onload = function(e){
   //updateSlide()
 }
 //oReq.addEventListener("load", reqListener);
+//TODO Dynamic file name
 oReq.open("GET", "slide.md");
 oReq.send();

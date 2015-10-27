@@ -48,3 +48,8 @@ html, body {
   transition: transform-y 2s;
   width: 100% !important;
 }
+
+/* vim */
+.CodeMirror {
+  height: 100%;
+}

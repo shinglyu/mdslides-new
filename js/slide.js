@@ -13,6 +13,7 @@ if (!!markdownSource && !!content) {
 remark.create();
 */
 
+//TODO: do we really need this wrapping?
 var slideRender = {
   // TODO: Render the slide in specified page number, not all.
   /**
