@@ -81,9 +81,7 @@ var oReq = new XMLHttpRequest();
 oReq.onload = function(e){
   console.log(oReq.response)
   document.getElementById('editorTextarea').value = oReq.response
-  document.getElementById('previewIframe').onload = function(){
-    updateSlide()
-  }
+  document.getElementById('previewIframe').addEventListener('load', updateSlide)
   //window.setTimeout(updateSlide, 1000)
   //updateSlide()
 }
