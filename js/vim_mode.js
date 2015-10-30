@@ -8,9 +8,10 @@ window.addEventListener('load', function() {
   console.log(editor)
   init(editor);
 
-  editor.on('change', function(evt){
+  /*editor.on('change', function(evt){
     updateSlide(editor.getValue())
   })
+  */
 });
 
 
