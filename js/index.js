@@ -1,8 +1,8 @@
 function getCurrentPage(content){
-  const MARKDOWN_PAGE_LINE = '---';
+  var MARKDOWN_PAGE_LINE = '---';
   console.log(content)
   return content
-    .join('\n')
+    //.join('\n')
     .replace(/^\s+|\s+$/g, '')
     .split(MARKDOWN_PAGE_LINE).length;
 }
@@ -17,7 +17,7 @@ function updateSlide(content) {
     page = 1;
   //editingContent = editorText.substring(0, editorTextarea.selectionStart);
   console.log(window.editor.getCursor())
-  editingContent = window.editor.getValue().split('\n', window.editor.getCursor()['line'])
+  editingContent = window.editor.getValue().split('\n', window.editor.getCursor().line).join('\n')
   //console.log(editingContent)
   //page = markdownHelper.pageNumber(editingContent);
   page = getCurrentPage(editingContent);
