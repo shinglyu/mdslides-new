@@ -1,21 +1,35 @@
+function getCurrentPage(content){
+  const MARKDOWN_PAGE_LINE = '---';
+  console.log(content)
+  return content
+    .join('\n')
+    .replace(/^\s+|\s+$/g, '')
+    .split(MARKDOWN_PAGE_LINE).length;
+}
 function updateSlide(content) {
-  console.log("update slide");
+  //console.log("update slide");
   var previewWindow = document.getElementById('previewIframe').contentWindow,
     //editorText = editorTextarea.value,
     //TODO handle invalid content
     editorText = content,
     //editorText = editor.getText(),
     editingContent = '',
-    page = 0;
+    page = 1;
   //editingContent = editorText.substring(0, editorTextarea.selectionStart);
+  console.log(window.editor.getCursor())
+  editingContent = window.editor.getValue().split('\n', window.editor.getCursor()['line'])
+  //console.log(editingContent)
   //page = markdownHelper.pageNumber(editingContent);
-  console.log(previewWindow);
-  console.log(editorText);
+  page = getCurrentPage(editingContent);
+  console.log(page)
+  //console.log(previewWindow);
+  //console.log(editorText);
   previewWindow.postMessage(
     {
       content: editorText,
       //TODO make page work
       //page: page
+      page: page
 
     },
     location.origin
@@ -48,7 +62,7 @@ function inputEventTrigger(inputElement, options, callback) {
   }
   //inputElement.addEventListener('input', function(event) {
   inputElement.on('change', function(event) {
-    console.log('changed')
+    //console.log('changed')
     if (!updateSlideTimer) {
       updateSlideTimer = setInterval(function() {
         var now = new Date().getTime();

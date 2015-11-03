@@ -34,6 +34,7 @@ var slideRender = {
       markdownSource.innerHTML = content;
     }
     remark.create();
+    this.showSlide(page);
   },
           /**
            * Show the slide in the specificed page.
@@ -58,7 +59,7 @@ var slideRender = {
 };
 
 window.addEventListener('message', function(event) {
-  console.log(event)
+  //console.log(event)
   var data = event.data;
   // TODO: Render the slide in specified page number, not all.
   slideRender.render(data.content, data.page);
