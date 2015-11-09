@@ -1,5 +1,5 @@
 class: center
-##Test slides for
+###Test slides for
 #MDSlides New
 ### 2015/11/9, Somebody
 
@@ -10,8 +10,13 @@ left, center, right
 ---
 name: toc
 ###Table of content
-* Category 1
-* Category 2
+1. Category 
+1. Category 
+1. Category 
+1. Category 
+1. Category 
+1. Category 
+1. Category 
 
 ???
 This is a template
@@ -34,10 +39,20 @@ This is a template
 * [link](www.mozilla.org)
 
 ---
+
 ###Images
-![cat](http://7-themes.com/data_images/out/66/6997052-funny-cat.jpg)
+.halfwidth[![cat](http://7-themes.com/data_images/out/66/6997052-funny-cat.jpg)]
+.halfwidth[![cat](http://7-themes.com/data_images/out/66/6997052-funny-cat.jpg)]
 
 ---
+
+class:center
+### Images
+![tall](https://placehold.it/100x400)
+![wide](https://placehold.it/350x100)
+
+---
+
 ###Embed Video
 <iframe width="100%" height="500px" src="https://www.youtube.com/embed/9VChusdIqU4" frameborder="0" allowfullscreen></iframe>
 ---
