@@ -39,6 +39,10 @@ img {
   max-height:100%;
 }
 
+a {
+  color:lime;
+}
+
 /* Custom classes */
 
 .footnote {
@@ -51,7 +55,7 @@ img {
 
 .halfwidth {
   /* for images */
-  width: 49.5%;
+  width: 49%;
   display:inline-block;
 }
 .fullwidth{
