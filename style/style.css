@@ -49,7 +49,24 @@ html, body {
   width: 100% !important;
 }
 
+#modeToggle {
+  background-color: rgba(0,0,0,0.1);
+  color: rgba(0,0,0,0.1);
+  height: 30px;
+  line-height:30px;
+  width: 3%;
+  vertical-align: middle;
+  text-align: center;
+  position: fixed;
+}
+
+#modeToggle:hover {
+  background-color: rgba(0,0,0,0.8);
+  color: rgba(255,255,255,0.8);
+}
+
 /* vim */
 .CodeMirror {
   height: 100%;
 }
+

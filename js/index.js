@@ -115,6 +115,23 @@ window.onload = function(){
 }
 */
 
+function toggleMode(){
+  var editor = document.getElementById('editor')
+  var preview = document.getElementById('preview')
+  var toggle = document.getElementById('modeToggle')
+  if (editor.style.display !== "none"){
+    editor.style.display = "none";
+    preview.style.width = "100%";
+    toggle.textContent = ">";
+
+  }
+  else {
+    editor.style.display = "block";
+    preview.style.width = "50%";
+    toggle.textContent = "<";
+  }
+}
+
 function init(editor){
   var oReq = new XMLHttpRequest();
   oReq.onload = function(e){
@@ -138,4 +155,7 @@ function init(editor){
   inputEventTrigger(editor, function(){
     updateSlide(editor.getValue());
   });
+  document.getElementById('modeToggle').addEventListener('click', function(e){
+    toggleMode();
+  })
 }
