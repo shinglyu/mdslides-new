@@ -5,8 +5,9 @@ window.addEventListener('load', function() {
     lineNumbers: true,
     theme: 'colorforth'
   });
-  console.log(editor)
+  console.log(editor.getValue())
   init(editor);
+  console.log(editor.getValue())
 
   /*editor.on('change', function(evt){
     updateSlide(editor.getValue())

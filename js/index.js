@@ -35,6 +35,8 @@ function updateSlide(content) {
     location.origin
 
   );
+}
+function save(editorText){
   var pReq = new XMLHttpRequest();
   pReq.onload = function(e){
     console.log("saved");
@@ -146,15 +148,17 @@ function init(editor){
     //})
     //window.setTimeout(updateSlide, 1000)
     //updateSlide()
+    // Init handlers after first load
+    inputEventTrigger(editor, function(){
+      updateSlide(editor.getValue());
+      save(editor.getValue());
+    });
   };
   //oReq.addEventListener("load", reqListener);
   //TODO Dynamic file name
   oReq.open("GET", "slide.md");
   oReq.send();
 
-  inputEventTrigger(editor, function(){
-    updateSlide(editor.getValue());
-  });
   document.getElementById('modeToggle').addEventListener('click', function(e){
     toggleMode();
   })
