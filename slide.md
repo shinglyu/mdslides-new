@@ -71,6 +71,21 @@ class: bleed
 Bleed will leave no margin and center align it
 
 ---
+###Code
+
+```javascript
+window.addEventListener('message', function(event) {
+  //console.log(event)
+  var data = event.data;
+  // TODO: Render the slide in specified page number, not all.
+  slideRender.render(data.content, data.page);
+  // // Go to the page edited by user currently.
+  //slideRender.showSlide(data.page);
+  //
+});
+
+```
+---
 template: toc
 ???
 reuse the template
