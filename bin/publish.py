@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import re
 from slugify import slugify
 import base64
@@ -29,6 +30,10 @@ def injectMd(template, md):
     #return template
 
 ## Change the title and filename
+def injectHTMLTitle(template, title):
+    p = re.compile('<title>(.*)</title>', re.DOTALL)
+    return re.sub(p, '<title>' + title + ' (powered by MDSlides)</title>', template)
+
 ## Inline the pictures
 def inlineLocalImg(md):
     newlines = []
@@ -67,7 +72,8 @@ def main():
     slugified_title = slugify(title)
 
     md_w_image = inlineLocalImg(md)
-    output = injectMd(template, md_w_image)
+    template_w_title = injectHTMLTitle(template, title)
+    output = injectMd(template_w_title, md_w_image)
     #inline template css
 
     with open(slugified_title + "_slide.html", 'w') as f:
