@@ -1,6 +1,6 @@
 class: center
 ###Test slides for
-#MDSlides New
+#MDSlides New 
 ### 2015/11/9, Somebody
 
 ???
@@ -41,8 +41,8 @@ This is a template
 ---
 
 ###Images
-.halfwidth[![cat](http://7-themes.com/data_images/out/66/6997052-funny-cat.jpg)]
-.halfwidth[![cat](http://7-themes.com/data_images/out/66/6997052-funny-cat.jpg)]
+.halfwidth[![remote cat](http://7-themes.com/data_images/out/66/6997052-funny-cat.jpg)]
+.halfwidth[![local cat](test/cat.png)]
 
 ---
 
