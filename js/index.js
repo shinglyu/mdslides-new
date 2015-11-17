@@ -1,3 +1,4 @@
+var lastUpdate=-1;
 function getCurrentPage(content){
   var MARKDOWN_PAGE_LINE = '---';
   console.log(content)
@@ -38,12 +39,35 @@ function updateSlide(content) {
 }
 function save(editorText){
   var pReq = new XMLHttpRequest();
+  /*
   pReq.onload = function(e){
     console.log("saved");
   };
-  //oReq.addEventListener("load", reqListener);
+  */
+  /*
+  pReq.addEventListener("load", function(e){
+    console.log(pReq.status)
+    //if (e.status)
+    lastUpdate = Date.now();
+
+  });
+  */
   pReq.open("POST", "http://127.0.0.1:9876/save");
-  pReq.send(editorText);
+  //pReq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  pReq.onreadystatechange = function(){
+    console.log(pReq)
+    if (pReq.readyState == 4 && pReq.status == 200){
+      console.log('saved successfully')
+      lastUpdate = Date.now();
+    }
+    else if (pReq.readyState == 4 && pReq.status == 409){
+      alert("You are already editing this document in another window, to prevent data loss, please close this one and use the existing window.")
+    }
+  }
+  pReq.send(JSON.stringify({
+    'text': editorText,
+    'lastUpdate': lastUpdate
+  }));
 }
 //TODO refactor this function to meet codemirror and textarea input
 function inputEventTrigger(inputElement, options, callback) {
