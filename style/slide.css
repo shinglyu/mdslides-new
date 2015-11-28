@@ -3,6 +3,7 @@
   color:lightgrey;
   background-size:cover;
   background-position:0,0;
+  font-family: Arial,sans-serif;
 }
 
 .bleed {
@@ -19,6 +20,7 @@ html {font-size: 2em;}
   margin: 1.414em 0 0.5em;
   font-weight: inherit;
   line-height: 1.2;
+  font-family: Arial Narrow,sans-serif;
 }
 
 .remark-slide-content  h1 {
@@ -40,7 +42,8 @@ img {
 }
 
 a {
-  color:lime;
+  /* color:lime; */
+  color: #ff8100
 }
 
 /* Custom classes */
@@ -51,6 +54,10 @@ a {
 
 .red {
   color:red;
+}
+
+.green {
+  color:green;
 }
 
 .halfwidth {

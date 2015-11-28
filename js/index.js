@@ -65,8 +65,7 @@ function save(editorText){
     }
   }
   pReq.send(JSON.stringify({
-    'text': editorText,
-    'lastUpdate': lastUpdate
+    'text': editorText, 'lastUpdate': lastUpdate
   }));
 }
 //TODO refactor this function to meet codemirror and textarea input
@@ -159,28 +158,31 @@ function toggleMode(){
 }
 
 function init(editor){
+  editor.setValue('Loading...')
   var oReq = new XMLHttpRequest();
-  oReq.onload = function(e){
-    console.log("Received content");
-    console.log(oReq);
-    console.log(oReq.response);
-    editor.setValue(oReq.response);
-    //document.getElementById('editorTextarea').value = oReq.response
-    updateSlide(editor.getValue());
-    //document.getElementById('previewIframe').addEventListener('load', function(){
-    //  updateSlide(editor.getText())
-    //})
-    //window.setTimeout(updateSlide, 1000)
-    //updateSlide()
-    // Init handlers after first load
-    inputEventTrigger(editor, function(){
+  oReq.onreadystatechange= function(e){
+    if (oReq.readyState == 4 && oReq.status == 200){
+      console.log("Received content");
+      console.log(oReq);
+      console.log(oReq.response);
+      editor.setValue(oReq.response);
+      //document.getElementById('editorTextarea').value = oReq.response
       updateSlide(editor.getValue());
-      save(editor.getValue());
-    });
+      //document.getElementById('previewIframe').addEventListener('load', function(){
+      //  updateSlide(editor.getText())
+      //})
+      //window.setTimeout(updateSlide, 1000)
+      //updateSlide()
+      // Init handlers after first load
+      inputEventTrigger(editor, function(){
+        updateSlide(editor.getValue());
+        save(editor.getValue());
+      });
+    }
   };
   //oReq.addEventListener("load", reqListener);
   //TODO Dynamic file name
-  oReq.open("GET", "slide.md");
+  oReq.open("GET", "slide.md?rand=" + Date.now());
   oReq.send();
 
   document.getElementById('modeToggle').addEventListener('click', function(e){
