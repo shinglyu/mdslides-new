@@ -23,7 +23,7 @@ if $(grep -q "$ghpages_domain$1" index.html)
 then
   echo "Slide already exist, don't update the index link"
 else
-  echo "<a href=\"$ghpages_domain$1\">$1</a>" >> index.html
+  echo "<a href=\"$ghpages_domain$1\">$1</a><br>" >> index.html
 fi
 # append the link to index.html
 # git add
