@@ -10,5 +10,8 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "gulp-uglify": "~1.4.2"
+  },
+  "devDependencies": {
+    "gulp-inline": "~0.1.1"
   }
 }

@@ -1,6 +1,9 @@
 # Install
 ```
 pip install python-slugify
+npm install .
+npm install gulp
+gulp
 ```
 
 # Working with Pentadactyl
