@@ -16,7 +16,8 @@ from threading import Thread, Event
 
 
 __author__ = 'slynn'
-watchfile='foo.txt' # TODO: Read form commandline
+watchfile= 'foo.txt' # TODO: Read form commandline
+template = './template/template.html'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -40,22 +41,41 @@ class FileWatcherThread(Thread):
     def watch(self):
         #infinite loop of magical random numbers
         print "Watching file: {}".format(self.filename)
-        while not thread_stop_event.isSet():
-            status = subprocess.call('inotifywait -e close {}'.format(self.filename), shell=True)
-            print self.prev_content
-            with open(self.filename, 'rb') as f:
-                self.prev_content = f.read()
-            socketio.emit('refresh', {'number': 0}, namespace='/test')
-            sleep(self.delay) # Debounce
-        status.terminate()
+        # while not thread_stop_event.isSet():
+        print("Setting up inotify")
+        status = subprocess.call('inotifywait -e close {}'.format(self.filename), shell=True)
+        # print self.prev_content
+        print("File changed, re-reading the content")
+        with open(self.filename, 'rb') as f:
+            self.prev_content = f.read()
+        print("Sending refresh signal")
+        socketio.emit('refresh', {'number': 0}, namespace='/test')
 
     def run(self):
         self.watch()
 
 @app.route('/')
 def index():
-    #only by sending this page first will the client be connected to the socketio instance
-    return render_template('index.html')
+    # only by sending this page first will the client be connected to the socketio instance
+    # By Flask default, files in statics/ will be served
+    # TODO: cache the file
+    print('In / handler')
+    print('Reading template')
+    with open(template, 'rb') as f:
+        template_str = f.read()
+    print('Reading test file')
+    with open(watchfile, 'rb') as f:
+        content_str = f.read()
+        autoreload_scripts = """
+            <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+            <script src="static/js/application.js"></script>
+        """
+    print('Template replacing')
+    template_str = template_str.replace('<!-- autoreload -->', autoreload_scripts)
+    template_str = template_str.replace('<!-- MARKDOWN CONTENT -->', content_str)
+    print('Serving')
+    return template_str
+    # return render_template('index.html')
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
@@ -67,7 +87,7 @@ def test_connect():
     if not thread.isAlive():
         print "Starting Thread"
         thread = FileWatcherThread(watchfile)
-        thread.daemon = True
+        # thread.daemon = True
         thread.start()
 
 @socketio.on('disconnect', namespace='/test')
