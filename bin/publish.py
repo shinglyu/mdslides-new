@@ -1,8 +1,10 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import re
 from slugify import slugify
 import base64
 import os
+import sys
 
 # Extract the filename
 
@@ -69,16 +71,32 @@ def main():
         md = mdfile.read()
 
     title = getTitle(md)
-    slugified_title = slugify(title)
+    slugified_title = slugify(unicode(title))
+    print "Filename: {}. \t Do you wish to change it? \nInput a custom filename or [Enter] to skip:".format(slugified_title)
+
+    custom_title=raw_input()
+    if custom_title != '':
+        slugified_custom_title = slugify(unicode(custom_title))
+        print "Filename: {}. Is that OK? [Y/n]".format(slugified_custom_title)
+        yes=raw_input()
+        if yes == '' or yes == 'y' or yes == 'Y':
+            slugified_title=slugified_custom_title
+        else:
+            print "Abort. No file was generated"
+            sys.exit()
+
+
+
 
     md_w_image = inlineLocalImg(md)
     template_w_title = injectHTMLTitle(template, title)
     output = injectMd(template_w_title, md_w_image)
     #inline template css
 
-    with open(slugified_title + "_slide.html", 'w') as f:
+    full_filename = slugified_title + "_slide.html"
+    with open(full_filename, 'w') as f:
         f.write(output)
-
+    print "file://{}/{} was generated".format(os.getcwd(), full_filename)
 if __name__ == "__main__":
     main()
 

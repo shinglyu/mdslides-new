@@ -1,11 +1,28 @@
 #!/bin/bash
-script_dir=${0%/*}/..
+MDSLIDES_ROOT=${0%/*}/..
 
-#mkdir mdslides_lib
-cp $script_dir/dist/*.html ./ #mdslides_lib/
-#if not exist
-if [ ! -f ./slide.md ]; then
-  cp $script_dir/slide.md ./ #mdslides_lib/
-fi
-(sleep 1; firefox "localhost:9876") &
-python3 $script_dir/server.py 
+case $1 in
+  help )
+    echo "Usage: mdslides <command>"
+    echo "Available commands:"
+    echo "   publish  package into a single html"
+    echo "   push     package into a single html"
+    echo "   (no arg) start editing"
+    ;;
+  publish )
+    python $MDSLIDES_ROOT/bin/publish.py
+    ;;
+  push )
+    bash $MDSLIDES_ROOT/bin/push_to_github.sh $2
+    ;;
+  * )
+    #mkdir mdslides_lib
+    cp $MDSLIDES_ROOT/dist/*.html ./ #mdslides_lib/
+    #if not exist
+    if [ ! -f ./slide.md ]; then
+      cp $MDSLIDES_ROOT/slide.md ./ #mdslides_lib/
+    fi
+    (sleep 1; firefox --new-window "127.0.0.1:9876") &
+    python3 $MDSLIDES_ROOT/server.py 
+    ;;
+esac
