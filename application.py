@@ -8,6 +8,7 @@ Aim is to create a webpage that is constantly updated with random numbers from a
 
 # Start with a basic flask app webpage.
 import argparse
+import difflib
 from flask.ext.socketio import SocketIO, emit
 from flask import Flask, render_template, url_for, copy_current_request_context
 import os
@@ -21,7 +22,6 @@ __author__ = 'slynn'
 watchfile= None
 mdslides_root = os.path.dirname(os.path.realpath(__file__))
 template = os.path.join(mdslides_root, 'template/template.html')
-print template
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -39,21 +39,47 @@ class FileWatcherThread(Thread):
         print("Starting FileWatcherThread")
         self.filename=filename
         self.delay = 1
-        self.prev_content = ""
+        self.prev_content = []
         super(FileWatcherThread, self).__init__()
 
     def watch(self):
-        #infinite loop of magical random numbers
-        print "Watching file: {}".format(self.filename)
-        # while not thread_stop_event.isSet():
-        print("Setting up inotify")
-        status = subprocess.call('inotifywait -e close {}'.format(self.filename), shell=True)
-        # print self.prev_content
-        print("File changed, re-reading the content")
-        with open(self.filename, 'rb') as f:
-            self.prev_content = f.read()
-        print("Sending refresh signal")
-        socketio.emit('refresh', {'number': 0}, namespace='/test')
+        while True:
+            #infinite loop of magical random numbers
+            print "Watching file: {}".format(self.filename)
+            # while not thread_stop_event.isSet():
+            print("Setting up inotify")
+            status = subprocess.call('inotifywait -e close {}'.format(self.filename), shell=True)
+            # print self.prev_content
+            print("File changed, re-reading the content")
+            print("prev: {}".format(self.prev_content))
+
+            with open(self.filename, 'rb') as f:
+                curr_content = f.readlines()
+            if self.prev_content == []:
+                self.prev_content = curr_content
+
+            d = difflib.Differ()
+            diffs = d.compare(self.prev_content, curr_content)
+            #print diffs
+
+            lineCount = 0
+            changedLines = 0
+            for line in diffs:
+                #print(line)
+                if line[:2] in ["  ", "+ "]:
+                    lineCount += 1
+                if line[:2] in ["+ ", "- "]:
+                    changedLines = max(changedLines, lineCount)
+                    print("{}: {}".format(lineCount, line))
+
+            #print(curr_content[:changedLines])
+            #print(filter(lambda x: x.strip() == "---", curr_content[:changedLines]))
+            changedPageNo = len(filter(lambda x: x.strip() == "---", curr_content[:changedLines])) + 1
+            #print(changedPageNo)
+
+            self.prev_content = curr_content
+            print("Sending refresh signal, turn to page " + str(changedPageNo))
+            socketio.emit('refresh', {'number': changedPageNo}, namespace='/test')
 
     def run(self):
         self.watch()
