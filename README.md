@@ -12,7 +12,7 @@ pip install -r requirements.txt
 
 ```
 source venv/bin/activate
-python application.py
+python application.py <path/to/slides.md>
 ```
 
 Then open http://localhost:5000

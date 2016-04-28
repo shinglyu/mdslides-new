@@ -7,8 +7,10 @@ Aim is to create a webpage that is constantly updated with random numbers from a
 """
 
 # Start with a basic flask app webpage.
+import argparse
 from flask.ext.socketio import SocketIO, emit
 from flask import Flask, render_template, url_for, copy_current_request_context
+import os
 from random import random
 import subprocess
 from time import sleep
@@ -16,8 +18,10 @@ from threading import Thread, Event
 
 
 __author__ = 'slynn'
-watchfile= 'foo.txt' # TODO: Read form commandline
-template = './template/template.html'
+watchfile= None
+mdslides_root = os.path.dirname(os.path.realpath(__file__))
+template = os.path.join(mdslides_root, 'template/template.html')
+print template
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -96,6 +100,13 @@ def test_disconnect():
 
 
 if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description="Create HTML5 slides with markdown")
+    parser.add_argument("input_md", help="the input markdown file")
+    args = parser.parse_args()
+
+    watchfile = args.input_md
+    print("Server started at http://localhost:5000")
     try:
         socketio.run(app)
     except KeyboardInterrupt:
