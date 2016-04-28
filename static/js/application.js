@@ -7,10 +7,11 @@ window.addEventListener('load', function(){
     //receive details from server
     console.log('Attaching refresh handler')
     socket.on('refresh', function(msg) {
-        console.log("Received number" + msg.number);
-        setTimeout(function(){
-          window.location.reload(false);
-        }, 1000)
+        console.log("Received number " + msg.number);
+        //window.location.reload()
+        //window.location.href = 'http://' + document.domain + ':' + location.port + '/#' + msg.number;
+        window.location.replace('http://' + document.domain + ':' + location.port + '/#' + msg.number);
+        window.location.reload(true);
         /*
         //maintain a list of ten numbers
         if (numbers_received.length >= 10){

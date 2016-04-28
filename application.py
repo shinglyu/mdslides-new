@@ -22,6 +22,7 @@ __author__ = 'slynn'
 watchfile= None
 mdslides_root = os.path.dirname(os.path.realpath(__file__))
 template = os.path.join(mdslides_root, 'template/template.html')
+prev_content = []
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -39,47 +40,47 @@ class FileWatcherThread(Thread):
         print("Starting FileWatcherThread")
         self.filename=filename
         self.delay = 1
-        self.prev_content = []
+        prev_content = []
         super(FileWatcherThread, self).__init__()
 
     def watch(self):
-        while True:
-            #infinite loop of magical random numbers
-            print "Watching file: {}".format(self.filename)
-            # while not thread_stop_event.isSet():
-            print("Setting up inotify")
-            status = subprocess.call('inotifywait -e close {}'.format(self.filename), shell=True)
-            # print self.prev_content
-            print("File changed, re-reading the content")
-            print("prev: {}".format(self.prev_content))
+        global prev_content
+        #infinite loop of magical random numbers
+        print "Watching file: {}".format(self.filename)
+        # while not thread_stop_event.isSet():
+        print("Setting up inotify")
+        status = subprocess.call('inotifywait -e close {}'.format(self.filename), shell=True)
+        # print prev_content
+        print("File changed, re-reading the content")
+        print("prev: {}".format(prev_content))
 
-            with open(self.filename, 'rb') as f:
-                curr_content = f.readlines()
-            if self.prev_content == []:
-                self.prev_content = curr_content
+        with open(self.filename, 'rb') as f:
+            curr_content = f.readlines()
+        if prev_content == []:
+            prev_content = curr_content
 
-            d = difflib.Differ()
-            diffs = d.compare(self.prev_content, curr_content)
-            #print diffs
+        d = difflib.Differ()
+        diffs = d.compare(prev_content, curr_content)
+        #print diffs
 
-            lineCount = 0
-            changedLines = 0
-            for line in diffs:
-                #print(line)
-                if line[:2] in ["  ", "+ "]:
-                    lineCount += 1
-                if line[:2] in ["+ ", "- "]:
-                    changedLines = max(changedLines, lineCount)
-                    print("{}: {}".format(lineCount, line))
+        lineCount = 0
+        changedLines = 0
+        for line in diffs:
+            #print(line)
+            if line[:2] in ["  ", "+ "]:
+                lineCount += 1
+            if line[:2] in ["+ ", "- "]:
+                changedLines = max(changedLines, lineCount)
+                print("{}: {}".format(lineCount, line))
 
-            #print(curr_content[:changedLines])
-            #print(filter(lambda x: x.strip() == "---", curr_content[:changedLines]))
-            changedPageNo = len(filter(lambda x: x.strip() == "---", curr_content[:changedLines])) + 1
-            #print(changedPageNo)
+        #print(curr_content[:changedLines])
+        #print(filter(lambda x: x.strip() == "---", curr_content[:changedLines]))
+        changedPageNo = len(filter(lambda x: x.strip() == "---", curr_content[:changedLines])) + 1
+        #print(changedPageNo)
 
-            self.prev_content = curr_content
-            print("Sending refresh signal, turn to page " + str(changedPageNo))
-            socketio.emit('refresh', {'number': changedPageNo}, namespace='/test')
+        prev_content = curr_content
+        print("Sending refresh signal, turn to page " + str(changedPageNo))
+        socketio.emit('refresh', {'number': changedPageNo}, namespace='/test')
 
     def run(self):
         self.watch()
