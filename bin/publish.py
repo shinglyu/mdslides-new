@@ -6,6 +6,9 @@ import base64
 import os
 import sys
 
+template_file = os.path.join("..","template", "template.html")
+css_files = ["static/style/style.css", "static/style/slide.css"]
+
 # Extract the filename
 
 def getTitle(md):
@@ -30,6 +33,17 @@ def injectMd(template, md):
     p = re.compile('<textarea id="source">(.*)</textarea>', re.DOTALL)
     return re.sub(p, '<textarea id="source">\n' + md + '\n</textarea>', template)
     #return template
+
+def injectCSS(template, files):
+    script_path = os.path.dirname(os.path.realpath(__file__)) # XXX:repeat
+    for cssfile in files:
+        with open(os.path.join(script_path, "..", cssfile), 'rb') as f:
+            css = f.read()
+        template = template.replace(
+            '<link rel="stylesheet" href="{}" type="text/css" media="all" />'.format(cssfile),
+            '<style>{}</style>'.format(css)
+        )
+    return template
 
 ## Change the title and filename
 def injectHTMLTitle(template, title):
@@ -63,7 +77,7 @@ def inlineLocalImg(md):
 def main():
     # Read the template
     script_path = os.path.dirname(os.path.realpath(__file__))
-    with open(script_path + '/../dist/slide.html', 'r') as templatefile: #FIXME: relative path only when run in base
+    with open(os.path.join(script_path, template_file), 'rb') as templatefile: #FIXME: relative path only when run in base
         template = templatefile.read()
 
     # Read the md
@@ -90,7 +104,8 @@ def main():
 
     md_w_image = inlineLocalImg(md)
     template_w_title = injectHTMLTitle(template, title)
-    output = injectMd(template_w_title, md_w_image)
+    template_w_title = injectMd(template_w_title, md_w_image)
+    output = injectCSS(template_w_title, css_files)
     #inline template css
 
     full_filename = slugified_title + "_slide.html"
