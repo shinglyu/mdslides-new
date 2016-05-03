@@ -16,13 +16,12 @@ case $1 in
     bash $MDSLIDES_ROOT/bin/push_to_github.sh $2
     ;;
   * )
-    #mkdir mdslides_lib
-    cp $MDSLIDES_ROOT/dist/*.html ./ #mdslides_lib/
     #if not exist
     if [ ! -f ./slide.md ]; then
       cp $MDSLIDES_ROOT/slide.md ./ #mdslides_lib/
     fi
-    (sleep 1; firefox --new-window "127.0.0.1:9876") &
-    python3 $MDSLIDES_ROOT/server.py 
+    (sleep 3; firefox --new-window "127.0.0.1:5000") &
+    source $MDSLIDES_ROOT/venv/bin/activate
+    python $MDSLIDES_ROOT/application.py slide.md
     ;;
 esac
