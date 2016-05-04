@@ -46,15 +46,22 @@ class FileWatcherThread(Thread):
     def watch(self):
         global prev_content
         #infinite loop of magical random numbers
-        print "Watching file: {}".format(self.filename)
+        watchfile = os.path.join(os.getcwd(), self.filename)
+        print "Watching file: {}".format(watchfile)
         # while not thread_stop_event.isSet():
         print("Setting up inotify")
-        status = subprocess.call('inotifywait -e close {}'.format(self.filename), shell=True)
+        status = subprocess.call('inotifywait -e close {}'.format(watchfile), shell=True)
         # print prev_content
         print("File changed, re-reading the content")
         print("prev: {}".format(prev_content))
 
-        with open(self.filename, 'rb') as f:
+        print("CWD is:")
+        print(os.getcwd())
+        print("CWD contains:")
+        print(os.listdir(os.getcwd()))
+        sleep(0.5) # Dropbox will delete the file and create a temp file fo a while
+        print(os.listdir(os.getcwd()))
+        with open(watchfile, 'rb') as f:
             curr_content = f.readlines()
         if prev_content == []:
             prev_content = curr_content
@@ -108,10 +115,8 @@ def index():
     return template_str
     # return render_template('index.html')
 
-
-
 @app.route('/pic/<path:path>')
-def send_js(path):
+def send_pic(path):
     return send_from_directory(os.path.join(os.getcwd(),'pic'), path)
 
 @socketio.on('connect', namespace='/test')
