@@ -2,6 +2,8 @@ MDSlides
 ==================
 # Installation
 
+Run `install.sh` or
+
 ```
 virtualenv venv
 source venv/bin/activate
