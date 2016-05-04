@@ -10,7 +10,7 @@ Aim is to create a webpage that is constantly updated with random numbers from a
 import argparse
 import difflib
 from flask.ext.socketio import SocketIO, emit
-from flask import Flask, render_template, url_for, copy_current_request_context
+from flask import Flask, render_template, url_for, copy_current_request_context, send_from_directory
 import os
 from random import random
 import subprocess
@@ -107,6 +107,12 @@ def index():
     print('Serving')
     return template_str
     # return render_template('index.html')
+
+
+
+@app.route('/pic/<path:path>')
+def send_js(path):
+    return send_from_directory(os.path.join(os.getcwd(),'pic'), path)
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
