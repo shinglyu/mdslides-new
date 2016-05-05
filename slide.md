@@ -1,12 +1,8 @@
-class: center
+class: center, middle
 ###Test slides for
 #MDSlides New 
-Hello world
-efhieh
-Eifjei
-oefjied
-efjei
-### 2015/11/9, Somebody
+### 2015/11/9
+### Somebody
 
 
 ???
@@ -15,7 +11,7 @@ left, center, right
 
 ---
 name: toc
-###Table of content
+###Agenda
 1. Category 
 1. Category 
 1. Category 
@@ -26,6 +22,16 @@ name: toc
 
 ???
 This is a template
+---
+###Table of content
+* Category 
+* Category 
+* Category a very very very long line that will overflow the width of the page
+* Category a very very very long line that will overflow the width of the page
+* Category a long line that has many words
+* Category a very very very long line that will overflow the width of the page
+* Category 
+* Category 
 ---
 ###Bullets and numbers
 * Bullet 1
@@ -42,13 +48,62 @@ This is a template
 * _italic_
 * .red[This is a red text]
 * .footnote[very small text]
+* This is an `inline code`
 * [link](www.mozilla.org)
 
 ---
 
 ###Images
 .halfwidth[![remote cat](http://7-themes.com/data_images/out/66/6997052-funny-cat.jpg)]
-.halfwidth[![local cat](test/cat.png)]
+.halfwidth[![local cat](static/pic/doge.jpeg)]
+.footnote[photocredit:unknown]
+
+---
+
+###Side by side
+<div class="column-2">
+  <h4>Pros</h4>
+  <ul>
+    <li>Fast</li>
+    <li>Fast</li>
+    <li>Fast</li>
+    <li>Efficient</li>
+    <li>Easy to maintain</li>
+  </ul>
+</div>
+
+<div class="column-2">
+<h4>Cons</h4>
+  <ul>
+    <li>Fast</li>
+    <li>Fast</li>
+    <li>Fast</li>
+    <li>Efficient</li>
+    <li>Easy to maintain</li>
+  </ul>
+</div>
+
+---
+
+###Float right img
+.float-right-half[![local cat](static/pic/doge.jpeg)]
+#### Doge
+* Fun
+* Cute
+* Kind
+* Too many thing to be put in a single line
+
+---
+### Tables
+
+
+
+| Title | From   | To        |
+|-------|--------|-----------|
+| Bus   | Taipei | Taoyuan   |
+| ANA   | Taipei | Tokyo     |
+| CX    | Taipei | Hong Kong |
+
 
 ---
 
@@ -62,15 +117,25 @@ class:center
 ###Embed Video
 <iframe width="100%" height="500px" src="https://www.youtube.com/embed/9VChusdIqU4" frameborder="0" allowfullscreen></iframe>
 ---
-background-image: url('http://people.mozilla.org/~smartell/blog/dino-wallpaper.png')
+background-image: url('static/pic/dino-wallpaper.png')
 class: bottom, right
 
 # Mozilla Rocks
+.footnote[photo credit: unknown]
 
 ???
 Scale to fit
 ---
-background-image: url('http://7-themes.com/data_images/out/66/6997052-funny-cat.jpg')
+background-image: url('static/pic/dino-wallpaper-vert.png')
+class: bottom, right
+
+#Mozilla Rocks
+.footnote[photo credit: unknown]
+
+???
+Scale to fit
+---
+background-image: url('static/pic/dino-wallpaper.png')
 class: bleed
 
 ???
