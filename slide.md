@@ -49,7 +49,7 @@ This is a template
 * .red[This is a red text]
 * .footnote[very small text]
 * This is an `inline code`
-* [link](www.mozilla.org)
+* [link](https://www.mozilla.org)
 
 ---
 
