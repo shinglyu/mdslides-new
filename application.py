@@ -16,6 +16,7 @@ from random import random
 import subprocess
 from time import sleep
 from threading import Thread, Event
+import json
 
 
 __author__ = 'slynn'
@@ -23,6 +24,7 @@ watchfile= None
 mdslides_root = os.path.dirname(os.path.realpath(__file__))
 template = os.path.join(mdslides_root, 'template/template.html')
 prev_content = []
+need_refresh_flag = {'need_refresh':False, 'page':1}
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -55,11 +57,12 @@ class FileWatcherThread(Thread):
         print("File changed, re-reading the content")
         print("prev: {}".format(prev_content))
 
-        print("CWD is:")
-        print(os.getcwd())
-        print("CWD contains:")
+        #print("CWD is:")
+        #print(os.getcwd())
+        #print("CWD contains:")
         print(os.listdir(os.getcwd()))
-        sleep(0.5) # Dropbox will delete the file and create a temp file fo a while
+        # sleep(0.5) # Dropbox will delete the file and create a temp file fo a while
+        sleep(1) # Dropbox will delete the file and create a temp file fo a while
         print(os.listdir(os.getcwd()))
         with open(watchfile, 'rb') as f:
             curr_content = f.readlines()
@@ -87,7 +90,10 @@ class FileWatcherThread(Thread):
 
         prev_content = curr_content
         print("Sending refresh signal, turn to page " + str(changedPageNo))
+        print(socketio)
+        need_refresh_flag = {'need_refresh': True, 'page':changedPageNo}
         socketio.emit('refresh', {'number': changedPageNo}, namespace='/test')
+        print("emitted!")
 
     def run(self):
         self.watch()
@@ -114,6 +120,10 @@ def index():
     print('Serving')
     return template_str
     # return render_template('index.html')
+
+@app.route('/need_refresh')
+def need_refresh():
+    return json.dumps(need_refresh_flag)
 
 @app.route('/pic/<path:path>')
 def send_pic(path):
