@@ -9,7 +9,7 @@ Aim is to create a webpage that is constantly updated with random numbers from a
 # Start with a basic flask app webpage.
 import argparse
 import difflib
-from flask.ext.socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit
 from flask import Flask, render_template, url_for, copy_current_request_context, send_from_directory
 import os
 from random import random
@@ -105,7 +105,7 @@ def index():
     with open(watchfile, 'rb') as f:
         content_str = f.read()
         autoreload_scripts = """
-            <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
             <script src="static/js/application.js"></script>
         """
     print('Template replacing')
@@ -128,6 +128,7 @@ def test_connect():
     #Start the random number generator thread only if the thread has not been started before.
     if not thread.isAlive():
         print "Starting Thread"
+        sleep(3) # Debounce
         thread = FileWatcherThread(watchfile)
         # thread.daemon = True
         thread.start()

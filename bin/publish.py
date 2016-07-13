@@ -7,7 +7,7 @@ import os
 import sys
 
 template_file = os.path.join("..","template", "template.html")
-css_files = ["static/style/style.css", "static/style/slide.css"]
+css_files = ["static/style/slide.css"]
 
 # Extract the filename
 
