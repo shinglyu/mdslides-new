@@ -22,6 +22,9 @@ case $1 in
     fi
     (sleep 1; firefox --new-window "127.0.0.1:5000") &
     source $MDSLIDES_ROOT/venv/bin/activate
-    python $MDSLIDES_ROOT/application.py slide.md
+    python $MDSLIDES_ROOT/server.py slide.md &
+    python $MDSLIDES_ROOT/filewatcher.py slide.md 
+    trap 'kill $(jobs -p)' EXIT
     ;;
 esac
+

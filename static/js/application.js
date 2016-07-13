@@ -1,29 +1,20 @@
 window.addEventListener('load', function(){
-    console.log('Connecting to socket')
-    //connect to the socket server.
-    var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
-    //var numbers_received = [];
-
-    //receive details from server
-    console.log('Attaching refresh handler')
-    socket.on('refresh', function(msg) {
-        console.log("Received number " + msg.number);
-        //window.location.reload()
-        //window.location.href = 'http://' + document.domain + ':' + location.port + '/#' + msg.number;
-        window.location.replace('http://' + document.domain + ':' + location.port + '/#' + msg.number);
-        window.location.reload(true);
-        /*
-        //maintain a list of ten numbers
-        if (numbers_received.length >= 10){
-            numbers_received.shift()
-        }            
-        numbers_received.push(msg.number);
-        numbers_string = '';
-        for (var i = 0; i < numbers_received.length; i++){
-            numbers_string = numbers_string + '<p>' + numbers_received[i].toString() + '</p>';
-        }
-        $('#log').html(numbers_string);
-        */
-    });
+  //var interval = 1000; // ms
+  var loaded = Date.now() / 1000;
+  var interval = 2000; // ms
+  window.setInterval(function(){
+    fetch('/needrefresh/').then(function(resp){
+      if (resp.ok){
+        return resp.json()
+      }
+    })
+    .then(function(jsonresp){
+      console.log(jsonresp['timestamp'] + " > " + loaded + " ?")
+      if (jsonresp['timestamp'] > loaded) {
+         window.location.replace('http://' + document.domain + ':' + location.port + '/#' + jsonresp['page']);
+         window.location.reload(true);
+      }
+    })
+  }, interval);
 })
 
