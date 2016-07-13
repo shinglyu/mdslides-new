@@ -31,7 +31,7 @@ app.config['SECRET_KEY'] = 'secret!'
 # app.config['DEBUG'] = True
 
 #turn the flask app into a socketio app
-socketio = SocketIO(app)
+#socketio = SocketIO(app)
 
 #random number Generator Thread
 thread = Thread()
@@ -90,9 +90,9 @@ class FileWatcherThread(Thread):
 
         prev_content = curr_content
         print("Sending refresh signal, turn to page " + str(changedPageNo))
-        print(socketio)
+        #print(socketio)
         need_refresh_flag = {'need_refresh': True, 'page':changedPageNo}
-        socketio.emit('refresh', {'number': changedPageNo}, namespace='/test')
+        #socketio.emit('refresh', {'number': changedPageNo}, namespace='/test')
         print("emitted!")
 
     def run(self):
@@ -125,9 +125,15 @@ def index():
 def need_refresh():
     return json.dumps(need_refresh_flag)
 
+@app.route('/need_refresh')
+def need_refresh():
+    return json.dumps(need_refresh_flag)
+
 @app.route('/pic/<path:path>')
 def send_pic(path):
     return send_from_directory(os.path.join(os.getcwd(),'pic'), path)
+
+'''
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
@@ -148,6 +154,7 @@ def test_disconnect():
     print('Client disconnected')
 
 
+'''
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Create HTML5 slides with markdown")
@@ -157,7 +164,10 @@ if __name__ == '__main__':
     watchfile = args.input_md
     print("Server started at http://localhost:5000")
     try:
-        socketio.run(app)
+        #socketio.run(app)
+        thread = FileWatcherThread(watchfile)
+        thread.start()
+        app.run()
     except KeyboardInterrupt:
         thread_stop_event.set()
         thread.join()
