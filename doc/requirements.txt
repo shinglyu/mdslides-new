@@ -1,0 +1,22 @@
+Slide system
+* Must have
+  * One page view v.s. all in one view
+  * Page turn by keyboard
+  * Page turn by mouse
+  * Dynamic style that matches screen size
+  * Markdown (pre-process or on-the-fly?)
+  * Extended markdown syntax
+    * Comment
+    * Easy class
+    * Page-level class
+  * Custom CSS for element (via markdown html)
+  * Background bleed image
+  * Code block + highlight
+  * Build-in style CSS
+  * URL jump to page
+  * PDF Print
+* Nice to have
+  * auto page number
+  * Page alias
+  * MathJAX
+  * Gradual revealing
