@@ -7,7 +7,7 @@ import os
 import sys
 
 template_file = os.path.join("..","template", "template.html")
-css_files = ["static/style/slide.css"]
+css_files = ["static/style/slide.css", "static/style/monokai-sublime.css"]
 
 # Extract the filename
 
