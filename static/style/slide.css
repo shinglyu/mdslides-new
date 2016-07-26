@@ -63,8 +63,10 @@ html {font-size:22px;}
 }
 
 .remark-code {
+  background-color: black;
   font-size: 0.9998rem;
   word-wrap:auto;
+  font-family: "courier new", monospace;
 }
 
 /* Images */
