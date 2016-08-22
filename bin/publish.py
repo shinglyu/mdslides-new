@@ -5,6 +5,11 @@ from slugify import slugify
 import base64
 import os
 import sys
+import Image
+import base64
+import cStringIO
+
+
 
 template_file = os.path.join("..","template", "template.html")
 css_files = ["static/style/slide.css", "static/style/monokai-sublime.css"]
@@ -51,6 +56,15 @@ def injectHTMLTitle(template, title):
     return re.sub(p, '<title>' + title + ' (powered by MDSlides)</title>', template)
 
 ## Inline the pictures
+def resizeImage(path):
+    #max_width=1024
+    #max_height=768
+    max_size = 800,600 #width, height
+
+    img = Image.open(path)# .convert('RGBA')
+    img.thumbnail(max_size)
+    return img
+
 def inlineLocalImg(md):
     newlines = []
     for line in md.split('\n'): #Assume picture is in its own line
@@ -72,8 +86,12 @@ def inlineLocalImg(md):
             extension = path[-3:] # TODO: handle extensions other then 3 chars
 
             # TODO: inline svg
-            with open(path, "rb") as image: # Hey, relative path?
-                encoded_string = 'data:image/' + extension + ';base64,' + base64.b64encode(image.read())
+            buffer = cStringIO.StringIO()
+            img = resizeImage(path)
+            img.save(buffer, format="PNG")
+            img_str = base64.b64encode(buffer.getvalue())
+            # with open(path, "rb") as image: # Hey, relative path?
+            encoded_string = 'data:image/' + extension + ';base64,' + img_str
 
             newline = line.replace(path, encoded_string)
             newlines.append(newline)
