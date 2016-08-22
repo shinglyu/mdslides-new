@@ -54,16 +54,27 @@ def injectHTMLTitle(template, title):
 def inlineLocalImg(md):
     newlines = []
     for line in md.split('\n'): #Assume picture is in its own line
-        result = re.search(r'\!\[[\w\s]*\]\((.*)\)', line)
-        if result is not None and not result.group(1).startswith('http'):
+        # TODO: handle
+        # background-image: url('pic/mozlondon-7.jpg')
 
-            path = result.group(1)
-            for extension in ['png', 'jpg', 'gif']:
-                if path.endswith(extension):
-                    with open(path, "rb") as image: # Hey, relative path?
-                        encoded_string = 'data:image/' + extension + ';base64,' + base64.b64encode(image.read())
+        md_result = re.search(r'\!\[[^\]*]*\]\((.*)\)', line)
+        html_result = re.search(r'<img [^>]*src="([^"]+)"', line)
+        if md_result is not None:
+            path = md_result.group(1)
+        elif html_result is not None:
+            path = html_result.group(1)
+        else:
+            newlines.append(line)
+            continue
+
+        if not path.startswith('http') and \
+            any(map(lambda ext: path.endswith(ext), ['png', 'jpg', 'gif'])):
+            extension = path[-3:] # TODO: handle extensions other then 3 chars
 
             # TODO: inline svg
+            with open(path, "rb") as image: # Hey, relative path?
+                encoded_string = 'data:image/' + extension + ';base64,' + base64.b64encode(image.read())
+
             newline = line.replace(path, encoded_string)
             newlines.append(newline)
 
