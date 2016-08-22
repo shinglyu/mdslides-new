@@ -1,6 +1,9 @@
 /* Color */
+.remark-slide-container {
+  background-color: black;
+}
 .remark-slide-content {
-  background-color:black;
+  background-color:#0d0d0d;
   color:lightgrey;
   background-size:cover;
   background-position:0,0;
