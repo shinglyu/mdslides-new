@@ -85,13 +85,25 @@ def inlineLocalImg(md):
             any(map(lambda ext: path.endswith(ext), ['png', 'jpg', 'gif'])):
             extension = path[-3:] # TODO: handle extensions other then 3 chars
 
-            # TODO: inline svg
             buffer = cStringIO.StringIO()
             img = resizeImage(path)
             img.save(buffer, format="PNG")
             img_str = base64.b64encode(buffer.getvalue())
-            # with open(path, "rb") as image: # Hey, relative path?
             encoded_string = 'data:image/' + extension + ';base64,' + img_str
+
+            newline = line.replace(path, encoded_string)
+            newlines.append(newline)
+
+        elif not path.startswith('http') and path.endswith('svg'):
+
+            with open(path, 'rb') as f:
+                file_content = f.read()
+            # We can directly inline svg without base64 encoding, but escaping
+            # The string is too complicated
+            # encoded_string = "data:image/svg+xml;charset=utf-8," + img_str.replace('\n', '')
+
+            img_str = base64.b64encode(file_content)
+            encoded_string = 'data:image/svg+xml;base64,' + img_str
 
             newline = line.replace(path, encoded_string)
             newlines.append(newline)
