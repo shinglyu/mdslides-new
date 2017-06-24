@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>MDSlides</title>
+    <style type="text/css" media="screen">
+      .presentation .page {
+        width: 100vw;
+        height:100vh;
+        max-width:100%;
+      }
+
+      .page {
+        border-bottom: solid 1px black;
+      }
+
+      .presentation {
+        margin: 1em;
+      }
+      
+    </style>
+    <style type="text/css" media="print">
+      
+    </style>
+  </head>
+  <body class="presentation">
+    <!-- dynamic content start -->
+    <div class="page">
+      <ul>
+      <li>Hello</li>
+      <li>World</li>
+      <li>World</li>
+      <li>World</li>
+      <li>World</li>
+      </ul>
+    </div>
+    <div class="page">
+      <h1>Foo bar</h1>
+      <h3>name</h3>
+    </div>
+    <!-- dynamic content end -->
+    <script type="text/javascript" charset="utf-8">
+      var currPage = 0;
+      const RIGHT=39;
+      const LEFT=37;
+
+      function turnPage(direction){
+        currPage += direction;
+        currPage = Math.max(0, currPage);
+        currPage = Math.min(document.getElementsByClassName('page').length, currPage);
+        // TODO: Maybe we want to cache the page list?
+        document.getElementsByClassName('page')[currPage].scrollIntoView();
+      }
+
+      function keypressListener(evt){
+        if (evt.keyCode == RIGHT) {
+          console.log("Next!")
+          turnPage(1);
+        }
+        if (evt.keyCode == LEFT) {
+          console.log("Prev!")
+          turnPage(-1);
+        }
+      }
+
+      document.addEventListener('keydown', keypressListener);
+
+    </script>
+  </body>
+</html>

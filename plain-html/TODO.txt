@@ -1,0 +1,10 @@
+toggle presentation mode with query string
+URL to a certain page
+Inline images
+inline svg
+
+Markdown content
+Top margin issue
+two column
+center, middle
+
